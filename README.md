@@ -28,10 +28,11 @@
 
 The code has been tested with CUDA 10.1, CuDNN 7.5, Python 3.7 and PyTorch 1.6.0. 
 ```shell
-    conda create -n "conda_bite" python=3.7.6 ipython
-    conda activate conda_bite
-    conda install pytorch==1.6.0 torchvision cudatoolkit=10.1 -c pytorch
+    conda create --name it01 --file env.yml python=3.9
+    conda activate it01
 ```
+
+IF needed:
 
 To install the remaining dependencies run the following command:
 ```shell
@@ -60,7 +61,7 @@ folder
 │   ├── stanext_related_data
 │   └── statistics
 ├── datasets
-│   ├── test_image_crops
+│   ├── custom_image_input
 │   ├── StanfordExtra_V12
 │   │   ├── StanExtV12_Images
 │   │   └── labels
@@ -88,21 +89,21 @@ We release code that is used for the our [huggingface demo](https://bite.is.tue.
 ```
 
 #### Inference for Stanford Extra dataset or full Image Folders
-In order to run our pretrained model on new sample images, prepare image crops and put them into the folder datasets/test_image_crops. The crops can have arbitrary rectangular shape, but should show the dog more or less in the center of the image. 
+In order to run our pretrained model on new sample images, prepare image crops and put them into the folder datasets/custom_image_input. The crops can have arbitrary rectangular shape, but should show the dog more or less in the center of the image. 
 
-Demo on all images within the folder datasets/test_image_crops:
+Demo on all images within the folder datasets/custom_image_input:
 ```shell
 python scripts/full_inference_including_ttopt.py \
---workers 12 \
+--workers 4 \
 --config refinement_cfg_test_withvertexwisegc_csaddnonflat_crops.yaml \
 --model-file-complete cvpr23_dm39dnnv3barcv2b_refwithgcpervertisflat0morestanding0/checkpoint.pth.tar \
---suffix ttopt_vtest1
+--suffix custom
 ```
 
 Demo on the Stanford Extra dataset:
 ```shell
 python scripts/full_inference_including_ttopt.py \
---workers 12 \
+--workers 4 \
 --config refinement_cfg_test_withvertexwisegc_csaddnonflat.yaml \
 --model-file-complete cvpr23_dm39dnnv3barcv2b_refwithgcpervertisflat0morestanding0/checkpoint.pth.tar \
 --suffix ttopt_vtest1

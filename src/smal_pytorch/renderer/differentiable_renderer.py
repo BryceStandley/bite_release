@@ -101,15 +101,13 @@ class SilhRenderer(torch.nn.Module):
                 principal_point=self.principal_point.repeat((bs, 1)), 
                 R=self.R.repeat((bs, 1, 1)), T=self.T.repeat((bs, 1)), 
                 image_size=self.image_size.repeat((bs, 1)))
-        elif pytorch3d.__version__ == '0.6.1':
+        elif pytorch3d.__version__ >= '0.6.1':
             cameras = PerspectiveCameras(device=device, in_ndc=False,
             focal_length=focal_lengths.repeat((1, 2)), 
             principal_point=self.principal_point.repeat((bs, 1)), 
             R=self.R.repeat((bs, 1, 1)), T=self.T.repeat((bs, 1)), 
             image_size=self.image_size.repeat((bs, 1)))
-        else: 
-            print('this part depends on the version of pytorch3d, code was developed with 0.2.5')
-            raise ValueError
+        
         return cameras
 
     def _get_visualization_from_mesh(self, mesh, cameras, lights=None):
@@ -225,11 +223,8 @@ class SilhRenderer(torch.nn.Module):
             cameras = self._get_cam(focal_lengths)
         if pytorch3d.__version__ == '0.2.5':
             proj_points_orig = cameras.transform_points_screen(points, screen_size)[:, :, [1, 0]]       # used in the original virtuel environment (for cvpr BARC submission) 
-        elif pytorch3d.__version__ == '0.6.1':
+        elif pytorch3d.__version__ >= '0.6.1':
             proj_points_orig = cameras.transform_points_screen(points)[:, :, [1, 0]]        
-        else: 
-            print('this part depends on the version of pytorch3d, code was developed with 0.2.5')
-            raise ValueError
         # flip, otherwise the 1st and 2nd row are exchanged compared to the ground truth
         proj_points = torch.flip(proj_points_orig, [2])   
         # --- project points 'manually'
@@ -274,7 +269,3 @@ class SilhRenderer(torch.nn.Module):
             return silh_images, proj_points, visualization
         else:
             return silh_images, proj_points
-
-
-
-  

@@ -121,7 +121,7 @@ def main(args):
         print('load sketchfab dataset')
         val_dataset, val_loader, len_val_dataset, test_name_list, stanext_data_info, stanext_acc_joints = get_sketchfab_evaluation_dataset(cfg.optim.BATCH_SIZE, args.workers)
     elif cfg.data.DATASET == 'ImgCropList': 
-        input_folder = os.path.join(os.path.dirname(__file__), '..', 'datasets', 'test_image_crops')
+        input_folder = os.path.join(os.path.dirname(__file__), '..', 'datasets', 'custom_image_input')
         val_dataset, val_loader, len_val_dataset, test_name_list, stanext_data_info, stanext_acc_joints = get_crop_evaluation_dataset(cfg.optim.BATCH_SIZE, args.workers, input_folder)
     elif cfg.data.DATASET in ['stanext24_easy', 'stanext24', 'stanext24_withgc', 'stanext24_withgc_big']:
         print('load dataset')
